@@ -22,7 +22,6 @@ namespace cbdc_project.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Book.ToListAsync());
         }
 
         // GET: Books/Details/5
@@ -33,14 +32,14 @@ namespace cbdc_project.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
+            var books = await _context.Books
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
+            if (books == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(books);
         }
 
         // GET: Books/Create
@@ -54,15 +53,15 @@ namespace cbdc_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Title,YearPublished,Author")] Books books)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
+                _context.Add(books);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(books);
         }
 
         // GET: Books/Edit/5
@@ -73,12 +72,12 @@ namespace cbdc_project.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book.FindAsync(id);
-            if (book == null)
+            var books = await _context.Books.FindAsync(id);
+            if (books == null)
             {
                 return NotFound();
             }
-            return View(book);
+            return View(books);
         }
 
         // POST: Books/Edit/5
@@ -86,9 +85,9 @@ namespace cbdc_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,YearPublished,Author")] Books books)
         {
-            if (id != book.Id)
+            if (id != books.Id)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace cbdc_project.Controllers
             {
                 try
                 {
-                    _context.Update(book);
+                    _context.Update(books);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                    if (!BooksExists(books.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +112,7 @@ namespace cbdc_project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(books);
         }
 
         // GET: Books/Delete/5
@@ -124,14 +123,14 @@ namespace cbdc_project.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
+            var books = await _context.Books
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
+            if (books == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(books);
         }
 
         // POST: Books/Delete/5
@@ -139,15 +138,15 @@ namespace cbdc_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Book.FindAsync(id);
-            _context.Book.Remove(book);
+            var books = await _context.Books.FindAsync(id);
+            _context.Books.Remove(books);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool BooksExists(int id)
         {
-            return _context.Book.Any(e => e.Id == id);
+            return _context.Books.Any(e => e.Id == id);
         }
     }
 }

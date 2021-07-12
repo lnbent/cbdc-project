@@ -14,6 +14,6 @@ namespace cbdc_project.Data
         {
         }
 
-        public DbSet<cbdc_project.Models.Book> Book { get; set; }
+        public DbSet<cbdc_project.Models.Books> Books { get; set; }
     }
 }
