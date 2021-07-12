@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
 
-namespace MvcMovie.Controllers
+namespace cbdc_project.Controllers
 {
-    public class HelloWorldController : Controller
+    public class MainController : Controller
     {
         public IActionResult Index()
         {
