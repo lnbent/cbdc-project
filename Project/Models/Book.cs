@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Models
 {
@@ -8,6 +9,7 @@ namespace Project.Models
         public int Id { get; set; }
         public string Title { get; set; }
 
+        [Display(Name = "Publish Date")]
         [DataType(DataType.Date)]
         public DateTime PublishDate { get; set; }
         public string Author { get; set; }
