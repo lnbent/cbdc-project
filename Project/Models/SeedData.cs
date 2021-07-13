@@ -25,28 +25,32 @@ namespace Project.Models
                     {
                         Title = "Fahrenheit 451",
                         PublishDate = DateTime.Parse("1953-10-19"),
-                        Author = "Ray Bradbury"
+                        Author = "Ray Bradbury",
+                        Status = ""
                     },
 
                     new Book
                     {
                         Title = "The Hobbit",
                         PublishDate = DateTime.Parse("1937-9-12"),
-                        Author = "J. R. R. Tolkien"
+                        Author = "J. R. R. Tolkien",
+                        Status = ""
                     },
 
                     new Book
                     {
                         Title = "One Flew Over the Cuckoo's Nest",
                         PublishDate = DateTime.Parse("1962-2-1"),
-                        Author = "Ken Kessey"
+                        Author = "Ken Kessey",
+                        Status = ""
                     },
 
                     new Book
                     {
                         Title = "Little Women",
                         PublishDate = DateTime.Parse("1869-12-2"),
-                        Author = "Louisa May Alcott"
+                        Author = "Louisa May Alcott",
+                        Status = ""
                     }
                 );
                 context.SaveChanges();
