@@ -10,6 +10,8 @@ namespace Project.Models
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
+            //auto populate the table 
+
             //using (var context = new ProjectContext(
             //    serviceProvider.GetRequiredService<
             //        DbContextOptions<ProjectContext>>()))
