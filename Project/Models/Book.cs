@@ -18,7 +18,7 @@ namespace Project.Models
         //do they own or wish to purchase said book
         public string Status { get; set; }
         //book photo
-        //public string BookPhoto { get; set; }
-        public IFormFile BookPhoto { get; set; }
+        public string BookPhoto { get; set; }
+        //public IFormFile BookPhoto { get; set; }
     }
 }
