@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models;
+using System.IO;
+using Project.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Project.Controllers
 {
     public class BooksController : Controller
     {
         private readonly ProjectContext _context;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public BooksController(ProjectContext context)
         {
@@ -54,7 +56,7 @@ namespace Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,PublishDate,Author,Status")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Title,PublishDate,Author,Status,BookPhoto")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +88,7 @@ namespace Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,PublishDate,Author,Status")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,PublishDate,Author,Status,BookPhoto")] Book book)
         {
             if (id != book.Id)
             {
@@ -148,6 +150,23 @@ namespace Project.Controllers
         private bool BookExists(int id)
         {
             return _context.Book.Any(e => e.Id == id);
+        }
+
+        private string UploadedFile(BookViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.BookPhoto != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.BookPhoto.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.BookPhoto.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

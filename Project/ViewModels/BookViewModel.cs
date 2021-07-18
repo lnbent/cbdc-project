@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Project.Models
+namespace Project.ViewModels
 {
-    public class Book
+    public class BookViewModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -17,8 +18,8 @@ namespace Project.Models
         public string Author { get; set; }
         //do they own or wish to purchase said book
         public string Status { get; set; }
-        //book image
-        [NotMapped]
-        public IFormFile ImageFile { get; set; }
+        //book photo
+        //public string BookPhoto { get; set; }
+        public IFormFile BookPhoto { get; set; }
     }
 }
