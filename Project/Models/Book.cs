@@ -17,6 +17,9 @@ namespace Project.Models
         public string Author { get; set; }
         //do they own or wish to purchase said book
         public string Status { get; set; }
+
+        //public string ImageName { get; set; }
+
         //book image
         [NotMapped]
         public IFormFile ImageFile { get; set; }
