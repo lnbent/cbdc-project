@@ -18,10 +18,11 @@ namespace Project.Models
         //do they own or wish to purchase said book
         public string Status { get; set; }
 
-        //public string ImageName { get; set; }
+        public string ImageName { get; set; }
 
         //book image
         [NotMapped]
+        [Display(Name = "Image File")]
         public IFormFile ImageFile { get; set; }
     }
 }

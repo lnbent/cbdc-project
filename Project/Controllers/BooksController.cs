@@ -14,11 +14,13 @@ namespace Project.Controllers
     public class BooksController : Controller
     {
         private readonly ProjectContext _context;
-        private readonly IWebHostEnvironment webHostEnvironment;
+        //private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public BooksController(ProjectContext context)
+        public BooksController(ProjectContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Books
@@ -62,13 +64,13 @@ namespace Project.Controllers
             {
                 //Save image to wwwroot/image
                 string wwwRootPath = _hostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(Book.Title.FileName);
-                string extension = Path.GetExtension(Book.ImageFile.FileName);
-                Book.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string fileName = Path.GetFileNameWithoutExtension(book.ImageFile.FileName);
+                string extension = Path.GetExtension(book.ImageFile.FileName);
+                book.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
                 string path = Path.Combine(wwwRootPath + "/Image/", fileName);
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    await Book.ImageFile.CopyToAsync(fileStream);
+                    await book.ImageFile.CopyToAsync(fileStream);
                 }
                 //Insert record
                 _context.Add(book);
@@ -99,7 +101,7 @@ namespace Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,PublishDate,Author,Status,ImageFile")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,PublishDate,Author,Status,ImageName,ImageFile")] Book book)
         {
             if (id != book.Id)
             {
@@ -143,6 +145,14 @@ namespace Project.Controllers
             {
                 return NotFound();
             }
+
+            //delete image from wwwroot/image
+            //var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "image", imageModel.ImageName);
+            //if (System.IO.File.Exists(imagePath))
+            //    System.IO.File.Delete(imagePath);
+            //_context.Images.Remove(imageModel);
+            //await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(Index));
 
             return View(book);
         }
