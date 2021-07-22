@@ -1,22 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models;
+using System.IO;
+using Project.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Project.Controllers
 {
     public class BooksController : Controller
     {
         private readonly ProjectContext _context;
+        //private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public BooksController(ProjectContext context)
+        public BooksController(ProjectContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Books
@@ -58,6 +62,17 @@ namespace Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Save image to wwwroot/image
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(book.ImageFile.FileName);
+                string extension = Path.GetExtension(book.ImageFile.FileName);
+                book.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await book.ImageFile.CopyToAsync(fileStream);
+                }
+                //Insert record
                 _context.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -130,6 +145,14 @@ namespace Project.Controllers
             {
                 return NotFound();
             }
+
+            //delete image from wwwroot/image
+            //var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "image", imageModel.ImageName);
+            //if (System.IO.File.Exists(imagePath))
+            //    System.IO.File.Delete(imagePath);
+            //_context.Images.Remove(imageModel);
+            //await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(Index));
 
             return View(book);
         }
