@@ -16,12 +16,9 @@ namespace Project.Models
         public string Author { get; set; }
         public string Status { get; set; }
 
-        //public Status Status{ get; set; }
+        //Upload Image
+        [DataType(DataType.Upload)]
+        [Display(Name = "Upload File")]
+        public string ImageFile { get; set; }
     }
-
-    //public enum Status
-    //{
-    //    Owned,
-    //    NotOwned
-    //}
 }
